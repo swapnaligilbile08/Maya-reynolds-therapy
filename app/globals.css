@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-cream font-sans text-leather antialiased; }
+  h1, h2, h3, h4 { @apply font-serif text-sage; }
+  :focus-visible { @apply outline outline-2 outline-offset-2 outline-oxblood; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-block bg-gold px-8 py-3.5 text-sm font-semibold tracking-wide text-bark
+      transition duration-200 hover:-translate-y-0.5 hover:bg-oxblood hover:text-cream hover:shadow-lg active:translate-y-0;
+  }
+  .eyebrow { @apply mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-tan; }
+  .section { @apply mx-auto max-w-6xl px-6 py-16 md:py-24; }
+}
+
+/* Hero text slides up one piece at a time */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.hero-in > * { animation: rise .8s ease-out both; }
+.hero-in > *:nth-child(2) { animation-delay: .12s; }
+.hero-in > *:nth-child(3) { animation-delay: .24s; }
+.hero-in > *:nth-child(4) { animation-delay: .36s; }
+
+/* Hides the default arrow on the FAQ items and mobile menu; the + turns into an x when open */
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+details .plus { transition: transform .2s ease; }
+details[open] .plus { transform: rotate(45deg); }
+
+/* Fade-in on scroll (ScrollEffects adds and removes the hidden class) */
+[data-reveal] { transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+[data-reveal].rv-hide { opacity: 0; transform: translateY(32px); }
+
+/* Underline that slides in when you hover a nav link */
+.navlink { position: relative; }
+.navlink::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+.navlink:hover::after { transform: scaleX(1); }
+
+/* Photos zoom slightly on hover; the two hero photos float gently */
+.photo img { transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.photo:hover img { transform: scale(1.06); }
+@keyframes drift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.drift { animation: drift 7s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition-duration: 0.01ms !important; }
+  .hero-in > *, .drift { animation: none; }
+  .photo img { transition: none; }
+}
